@@ -12,7 +12,9 @@ class RestaurantMenuApp extends StatelessWidget {
     return MaterialApp(
       title: 'Restaurant Menu',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFB39DDB)),
+        fontFamily: 'Josefin Sans',
+        scaffoldBackgroundColor: const Color(0xFFF8F5FC),
         useMaterial3: true,
       ),
       home: const MenuScreen(),
@@ -28,31 +30,28 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delicious Bites Menu'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text('Restaurant Menu'),
+        backgroundColor: const Color(0xFFB39DDB),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: const [
           FoodCard(
-            name: 'Nasi Lemak Special',
-            description: 'Fragrant coconut rice served with crispy anchovies, peanuts, hard-boiled egg, cucumber, and spicy sambal.',
-            price: 'RM 12.00',
-            icon: Icons.rice_bowl,
+            name: 'Vegetable Pizza',
+            description: 'Loaded with fresh bell peppers, onions, mushrooms, olives, and mozzarella cheese on a crispy crust.',
+            price: 'RM 22.00',
           ),
-          SizedBox(height: 12),
+          SizedBox(height: 16),
           FoodCard(
-            name: 'Grilled Chicken Chop',
-            description: 'Juicy grilled chicken thigh served with black pepper sauce, French fries, and coleslaw.',
-            price: 'RM 18.50',
-            icon: Icons.fastfood,
+            name: 'Chicken Pizza',
+            description: 'Topped with tender grilled chicken chunks, BBQ sauce drizzle, onions, and extra melted cheese.',
+            price: 'RM 25.50',
           ),
-          SizedBox(height: 12),
+          SizedBox(height: 16),
           FoodCard(
-            name: 'Classic Cheeseburger',
-            description: 'Beef patty with melted cheddar cheese, fresh lettuce, tomatoes, and special sauce in a toasted bun.',
-            price: 'RM 15.00',
-            icon: Icons.lunch_dining,
+            name: 'Cheese Pizza',
+            description: 'A classic favorite featuring a generous blend of rich mozzarella and cheddar cheese over rich tomato sauce.',
+            price: 'RM 20.00',
           ),
         ],
       ),
@@ -64,54 +63,136 @@ class FoodCard extends StatelessWidget {
   final String name;
   final String description;
   final String price;
-  final IconData icon;
 
   const FoodCard({
     super.key,
     required this.name,
     required this.description,
     required this.price,
-    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color(0xFFE6D9F2),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Icon(icon, size: 50, color: Colors.orange),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
+      child: InkWell(
+        onTap: () {
+          // Extra Task Navigation: Opens the FoodDetailScreen when tapped
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodDetailScreen(
+                name: name,
+                description: description,
+                price: price,
               ),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF9575CD),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.local_pizza,
+                  color: Colors.white,
+                  size: 40,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3F3156),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Second Screen for the Extra Task Navigation
+class FoodDetailScreen extends StatelessWidget {
+  final String name;
+  final String description;
+  final String price;
+
+  const FoodDetailScreen({
+    super.key,
+    required this.name,
+    required this.description,
+    required this.price,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(name),
+        backgroundColor: const Color(0xFFB39DDB),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEDE7F6),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.local_pizza,
+                  size: 90,
+                  color: Color(0xFF7E57C2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              price,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Description:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              description,
+              style: const TextStyle(fontSize: 16, height: 1.5),
             ),
           ],
         ),
